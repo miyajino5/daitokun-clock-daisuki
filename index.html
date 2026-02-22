@@ -316,6 +316,11 @@
     </div>
     
     <script>
+        let currentCategory = 'all';
+        let currentIndex = 0;
+        let filteredData = [];
+        let favorites = JSON.parse(localStorage.getItem('clock_favorites') || '[]');
+
         const clockData = [
   {
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Le_Musée_Paul_Dupuy_-_Horloge_japonaise_à_double_foliot_(Wadokei)_-_Période_Edo.jpg/1024px-Le_Musée_Paul_Dupuy_-_Horloge_japonaise_à_double_foliot_(Wadokei)_-_Période_Edo.jpg",
@@ -1392,4 +1397,105 @@
     "category": "日本"
   },
   {
-    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Horloge_à_poids_-_Japon_-_Meiji_-_Musée_Paul_
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Horloge_à_poids_-_Japon_-_Meiji_-_Musée_Paul_Dupuy_-_Toulouse_-_Détail_45.jpg/1024px-Horloge_à_poids_-_Japon_-_Meiji_-_Musée_Paul_Dupuy_-_Toulouse_-_Détail_45.jpg",
+    "title": "日本の時計",
+    "desc": "日本の時計だよ！",
+    "category": "日本"
+  }
+];
+
+        const imgContainer = document.querySelector('.image-container');
+        const imgTitle = document.querySelector('.image-title');
+        const imgDesc = document.querySelector('.image-desc');
+        const counter = document.querySelector('.counter');
+        const btnNext = document.getElementById('btnNext');
+        const btnSave = document.getElementById('btnSave');
+        const favCount = document.getElementById('favCount');
+        const favList = document.getElementById('favList');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+
+        function updateDisplay() {
+            const item = filteredData[currentIndex];
+            imgContainer.innerHTML = `<img src="${item.url}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/800x600?text=Image+Error'">`;
+            imgTitle.textContent = item.title;
+            imgDesc.textContent = item.desc;
+            counter.textContent = `${currentIndex + 1} / ${filteredData.length}`;
+            
+            const isFav = favorites.some(f => f.url === item.url);
+            btnSave.textContent = isFav ? '❤️ ほぞんずみ' : '❤️ ほぞん';
+            btnSave.style.opacity = isFav ? '0.7' : '1';
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            if (category === 'all') {
+                filteredData = [...clockData];
+            } else {
+                filteredData = clockData.filter(item => item.category === category);
+            }
+            currentIndex = 0;
+            updateDisplay();
+            
+            categoryBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % filteredData.length;
+            updateDisplay();
+        }
+
+        function saveFavorite() {
+            const item = filteredData[currentIndex];
+            const exists = favorites.some(f => f.url === item.url);
+            
+            if (!exists) {
+                favorites.push(item);
+                localStorage.setItem('clock_favorites', JSON.stringify(favorites));
+                updateFavoritesList();
+                updateDisplay();
+            }
+        }
+
+        function removeFavorite(url) {
+            favorites = favorites.filter(f => f.url !== url);
+            localStorage.setItem('clock_favorites', JSON.stringify(favorites));
+            updateFavoritesList();
+            updateDisplay();
+        }
+
+        function updateFavoritesList() {
+            favCount.textContent = `${favorites.length}まい`;
+            favList.innerHTML = '';
+            favorites.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'favorite-item';
+                div.innerHTML = `
+                    <img src="${item.url}" alt="${item.title}">
+                    <button class="remove-btn" onclick="event.stopPropagation(); removeFavorite('${item.url}')">×</button>
+                `;
+                div.onclick = () => {
+                    const index = filteredData.findIndex(f => f.url === item.url);
+                    if (index !== -1) {
+                        currentIndex = index;
+                        updateDisplay();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                };
+                favList.appendChild(div);
+            });
+        }
+
+        btnNext.onclick = nextImage;
+        btnSave.onclick = saveFavorite;
+        imgContainer.onclick = nextImage;
+
+        categoryBtns.forEach(btn => {
+            btn.onclick = () => filterCategory(btn.dataset.category);
+        });
+
+        // Initialize
+        filterCategory('all');
+        updateFavoritesList();
+    </script>
