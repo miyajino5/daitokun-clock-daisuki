@@ -2,422 +2,292 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>だいとくん とけい だいすき！</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        * {
+        :root {
+            --bg-color: #e0f7fa;
+            --card-bg: #ffffff;
+            --primary-color: #4fc3f7;
+            --secondary-color: #ff80ab;
+            --text-color: #37474f;
+        }
+        body {
+            font-family: 'Kiwi Maru', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(135deg, #87CEEB 0%, #E0F6FF 100%);
-            font-family: 'Hiragino Maru Gothic ProN', 'HGMaruGothicMPRO', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            overflow-x: hidden;
         }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .header {
+        header {
             text-align: center;
-            margin-bottom: 30px;
+            padding: 20px 10px;
+            width: 100%;
         }
-
-        .title {
-            font-size: 2.5em;
-            color: #FF69B4;
-            margin: 20px 0;
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #ff4081;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-
         .subtitle {
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 20px;
+            font-size: 14px;
+            margin-top: 5px;
+            color: #546e7a;
         }
-
-        .category-buttons {
+        .filter-container {
             display: flex;
-            flex-wrap: wrap;
             gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
             justify-content: center;
-            margin-bottom: 30px;
         }
-
-        .category-btn {
-            padding: 12px 20px;
-            font-size: 1.1em;
+        .filter-btn {
+            padding: 8px 15px;
             border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            background: white;
-            color: #333;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .category-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-
-        .category-btn.active {
-            background: #FF69B4;
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .main-content {
-            background: white;
-            border-radius: 30px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-        }
-
-        .image-container {
-            width: 100%;
-            height: 400px;
-            background: #f0f0f0;
             border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
+            background: white;
             cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+        .main-card {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        #imgContainer {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
+            border-radius: 15px;
+            background: #f5f5f5;
             position: relative;
         }
-
-        .image-container img {
+        #imgContainer img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            display: block;
+            transition: opacity 0.3s;
         }
-
-        .image-info {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .image-title {
-            font-size: 1.8em;
-            color: #FF69B4;
-            margin-bottom: 10px;
-        }
-
-        .image-desc {
-            font-size: 1.1em;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .counter {
-            font-size: 0.9em;
-            color: #999;
-        }
-
-        .button-group {
+        .controls {
             display: flex;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            width: 100%;
         }
-
         .btn {
             flex: 1;
             padding: 15px;
-            font-size: 1.2em;
             border: none;
             border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.1s, box-shadow 0.1s;
+            font-family: inherit;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
-
-        #btnNext {
-            background: #4169E1;
-            color: white;
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
-        #btnNext:hover {
-            background: #315AC1;
-            transform: scale(1.05);
-        }
-
-        #btnSave {
-            background: #FF69B4;
-            color: white;
-        }
-
-        #btnSave:hover {
-            background: #FF1493;
-            transform: scale(1.05);
-        }
-
-        .favorites-section {
-            background: #FFF8DC;
+        #btnNext { background-color: #448aff; color: white; }
+        #btnSave { background-color: #ff4081; color: white; }
+        
+        .fav-section {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(255,255,255,0.7);
             border-radius: 20px;
-            padding: 20px;
-            margin-top: 30px;
+            padding: 15px;
+            margin-bottom: 40px;
         }
-
-        .favorites-title {
-            font-size: 1.5em;
-            color: #FF69B4;
-            margin-bottom: 15px;
+        .fav-title {
             text-align: center;
-        }
-
-        .favorites-count {
-            text-align: center;
-            font-size: 1.1em;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        #favCount {
             font-weight: bold;
-            color: #FF69B4;
+            margin-bottom: 10px;
+            color: #fbc02d;
         }
-
-        .favorites-list {
+        .fav-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
             gap: 10px;
         }
-
-        .favorite-item {
-            position: relative;
-            cursor: pointer;
+        .fav-item {
+            width: 80px;
+            height: 80px;
             border-radius: 10px;
             overflow: hidden;
+            background: white;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
         }
-
-        .favorite-item:hover {
-            transform: scale(1.05);
-        }
-
-        .favorite-item img {
+        .fav-item img {
             width: 100%;
-            height: 100px;
+            height: 100%;
             object-fit: cover;
         }
-
-        .remove-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(255, 0, 0, 0.8);
-            color: white;
-            border: none;
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
             border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
         }
-
-        .remove-btn:hover {
-            background: rgba(255, 0, 0, 1);
-        }
-
-        @media (max-width: 600px) {
-            .title {
-                font-size: 1.8em;
-            }
-
-            .image-container {
-                height: 300px;
-            }
-
-            .category-btn {
-                padding: 10px 15px;
-                font-size: 0.9em;
-            }
-
-            .btn {
-                padding: 12px;
-                font-size: 1em;
-            }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="title">⏰ だいとくん とけい だいすき！</div>
-            <div class="subtitle">まるい とけい を たくさん みてみよう！</div>
+    <header>
+        <h1>⏰ だいとくん とけい だいすき！</h1>
+        <p class="subtitle">まるい とけい を たくさん みてみよう！</p>
+    </header>
+
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="setFilter('ぜんぶ')">🟢 ぜんぶ</button>
+        <button class="filter-btn" onclick="setFilter('あたらしい')">🔵 あたらしい</button>
+        <button class="filter-btn" onclick="setFilter('かいがい')">🔴 かいがい</button>
+    </div>
+
+    <div class="main-card">
+        <div id="imgContainer">
+            <div class="loading-spinner"></div>
         </div>
-
-        <div class="category-buttons">
-            <button class="category-btn" data-category="all">🟢 ぜんぶ</button>
-            <button class="category-btn" data-category="あたらしい">🔵 あたらしい</button>
-            <button class="category-btn" data-category="かいがい">🔴 かいがい</button>
-        </div>
-
-        <div class="main-content">
-            <div class="image-container" id="imgContainer">
-                <div id="loadingText" style="text-align: center; color: #999;">よみこみちゅう...</div>
-            </div>
-
-            <div class="image-info">
-                <div class="image-title" id="imgTitle">-</div>
-                <div class="image-desc" id="imgDesc">-</div>
-                <div class="counter" id="counter">-</div>
-            </div>
-
-            <div class="button-group">
-                <button class="btn" id="btnNext">つぎの とけい ▶</button>
-                <button class="btn" id="btnSave">❤️ ほぞん</button>
-            </div>
-        </div>
-
-        <div class="favorites-section">
-            <div class="favorites-title">⭐ おきにいり</div>
-            <div class="favorites-count">
-                <span id="favCount">0</span>まい
-            </div>
-            <div class="favorites-list" id="favList"></div>
+        <div class="controls">
+            <button id="btnNext" class="btn">つぎの とけい ▶</button>
+            <button id="btnSave" class="btn">❤️ ほぞん</button>
         </div>
     </div>
 
-    <script id="clockDataScript">
-        const allClockData = [{"title": "おうちの とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Modern_functual_kept_battery_driven_wall_clock.jpg", "category": "あたらしい"}, {"title": "おうちの とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Post_medieval_to_modern_tuning_key_or_clock_key_%28FindID_201007%29.jpg", "category": "あたらしい"}, {"title": "おうちの とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Simple_modern_style_battery_driven_wall_clock.jpg", "category": "あたらしい"}, {"title": "おそとの とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Clock_on_Harbour_Master%27s_Station_-_geograph.org.uk_-_595619.jpg", "category": "かいがい"}, {"title": "おそとの とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/6/64/London_St_Pancras_International_Station_-_clock_tower_%2820905907046%29.jpg", "category": "かいがい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592229740%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/d/de/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592236660%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592261230%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592266518%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592272159%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592287600%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592288999%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592314950%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592329920%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592390738%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592403117%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592445687%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592480967%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592496237%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/1/12/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814755903586%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814755926436%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814756076216%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814775760781%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814775807851%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814776691334%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814778583302%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814778932145%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814778998265%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/5/59/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814779004265%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814798906193%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/001_2020_04_21_Uhren_fuer_den_Innenbereich.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/3/37/002_2020_04_21_Uhren_fuer_den_Innenbereich.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/7/7c/003_2020_04_21_Uhren_fuer_den_Innenbereich.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/8/87/004_2020_04_21_Uhren_fuer_den_Innenbereich.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Analog_Watch.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Analog_tachymeter_sec.png", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Analog_watch_2.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/BRM_BIROTOR.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Big_analog_watch_%2851984162606%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/1/11/Casio_G-Shock_GA-100%2C_digital_and_analog_watch_%28from_2010%2C_photographed_in_2023%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Casio_G-Shock_GA-100%2C_digital_and_analog_watch_%28model_of_2010%2C_photographed_new_2023%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Casio_G-Shock_analog-digital_watch.jpeg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Clock_face_one_hand.png", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Generic_analog_watch.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Glowing_clockface_indices_of_Citizen_Diver%27s_watch_with_depth_gauge_and_Eco-Drive_%28cropped%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/0/03/Makita_8406_Diamon_Core_Drill_%284887726030%29.jpg", "category": "あたらしい"}, {"title": "おうちの とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/b/be/Modern_Analog_Watch.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Old_Analog_clock_%286863273796%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Omega_Gen%C3%A8ve_Handaufzug%2C_Cal._613.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Seiko_Kinetic_SMY151P1_watch_%28cropped%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Timeclock_used_at_Appleton_Woolen_Mills%2C_Appleton%2C_Wisconsin%2C_late_1800s_-_Wisconsin_Historical_Museum_-_DSC03243.JPG", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Zenith_Defy_Analog_Quartz_Men%27s_Analog_Watch_With_Red_Digital_LED_Display%2C_NOS%2C_Swiss_Made%2C_Circa_1970s_%2836651253736%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Beijing_Ancient_Observatory_20090715-19_%28cropped%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/CCPR_MESS.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/7/73/Cadet_College_Panjgur_Balochistan_PK.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Ccpr_CLASS_ROOM.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Ccpr_IQBAL_BLOCK_%28CADET_COLLEGE_PANJGUR%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/0/05/Ccpr_sir_syed_block%28CADET_COLLEGE_PANJGUR%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Champagnole_Avenue_de_la_Republique._Sidewalk_cafe._Spielvogel_2013.JPG", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Cooking_Paella_-_Flickr_-_keith_ellwood.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Juist%2C_Wasserturm_--_2014_--_3477.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/b/bf/LaPorte_County_Courthouse%2C_813_Lincolnway_%28LaPorte%2C_Ind.%29_-_DPLA_-_a47699b980f8757f8f3be5f4af6d20ad.jpg", "category": "あたらしい"}, {"title": "おうちの とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/3/35/Modern_cabinet_work%2C_furniture_and_fitments%3B_an_account_of_the_theory_and_practice_in_the_production_of_all_kinds_of_cabinet_work_and_furniture_with_chapters_on_the_growth_and_progress_of_design_and_%2814593727998%29.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Paella_line_-_keith_ellwood.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/c/c6/%D0%A0%D0%B0%D1%82%D1%83%D1%88%D0%B0_%D0%97%D0%B0%D0%BC%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA%2C_%D0%96%D0%BE%D0%B2%D0%BA%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80-%D0%BD%2C_%D0%BC._%D0%96%D0%BE%D0%B2%D0%BA%D0%B2%D0%B0.jpg", "category": "あたらしい"}, {"title": "まるい とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/%D0%A0%D0%B0%D1%82%D1%83%D1%88%D0%B0_%D0%97%D0%B0%D0%BC%D0%BA%D0%BE%D0%B2%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA%2C_%D0%BC._%D0%96%D0%BE%D0%B2%D0%BA%D0%B2%D0%B0.jpg", "category": "あたらしい"}, {"title": "おうちの とけい", "desc": "まるい とけい だよ！", "url": "https://upload.wikimedia.org/wikipedia/commons/0/00/Hampton_Court_Palace_and_the_Barracks_from_the_Royal_Kitchen_Garden.jpg", "category": "あたらしい"}];
-    </script>
+    <div class="fav-section">
+        <div class="fav-title">⭐ おきにいり</div>
+        <div id="favGrid" class="fav-grid"></div>
+        <div id="favCount" style="text-align:center; font-size:12px; margin-top:10px; color:#78909c;">0 まい</div>
+    </div>
 
     <script>
-        let currentCategory = 'all';
+        const allClockData = [{"url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Clock%2C_wall_%28AM_6526-1%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Clock%2C_wall_%28AM_6526-2%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/43/Clock%2C_wall_%28AM_6526-3%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Clock%2C_wall_%28AM_6526-4%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Clock%2C_wall_%28AM_6526-5%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Clock%2C_wall_%28AM_6526-6%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Clock%2C_wall_%28AM_6526-7%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/2/23/Clock%2C_wall_%28AM_6526-8%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/8/8b/HK_%E6%97%BA%E8%A7%92_Mongkok_%E5%A7%8B%E5%89%B5%E4%B8%AD%E5%BF%83_Pioneer_Centre_exhibition_Oct_2017_IX1_cafe_electric_clock.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/64/London_St_Pancras_International_Station_-_clock_tower_%2820905907046%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/MULTY_2019-PIK.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Master_Humphrey%27s_clock_%281840%29_%2814579217308%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Master_Humphrey%27s_clock_%281840%29_%2814579400307%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Master_Humphrey%27s_clock_%281843%29_%2814586959588%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/d/db/Master_Humphrey%27s_clock_%281843%29_%2814770392431%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/0/02/Master_Humphrey%27s_clock_%281843%29_%2814770420361%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Master_Humphrey%27s_clock_%281843%29_%2814793463033%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Modern_functual_kept_battery_driven_wall_clock.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Round_analog_clock_%28Unsplash%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Round_clock_brick_building_%28Unsplash%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/41/SZ_%E6%B7%B1%E5%9C%B3_Shenzhen_%E5%8D%97%E5%B1%B1%E5%9C%96%E6%9B%B8%E9%A4%A8_Nanshan_Library_wall_fan_n_round_clock_June_2025_R12S_03.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Simple_modern_style_battery_driven_wall_clock.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/5/58/St_Mary%27s_church_-_C17_clock_on_west_wall_-_geograph.org.uk_-_1363776.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/St_Mary%27s_church_-_wall_monument_-_geograph.org.uk_-_1363735.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592229740%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Twice_round_the_clock%3B_or%2C_The_hours_of_the_day_and_night_in_London_%281859%29_%2814592304888%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/UNO-Einzeigeruhr-Wanduhr.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/46/Wall_clock_in_morning_time.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/5/52/Westerstrands_urfabrik_AB_runt_v%C3%A4ggur.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/8/82/1990-02-23_Bezirk_Leipzig_Stadt_Leipzig_Hauptbahnhof_%28DDR%29_b.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/0/07/2019_at_Penrith_station_-_platform_clock.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/9/93/A_fresh_view_of_Nottingham_Station_clock_-_geograph.org.uk_-_4674939.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/0/02/Ancienne_horloge_de_gare_photo_2.JPG", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Ansfelden_Bahnhof_Nettingsdorf-9693.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/7/76/BLS-Bahnhof_in_Ins.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Bahnhof_Trebsen_%28Mulde%29_%E2%80%93_Empfangsgeb%C3%A4ude_%E2%80%93_Fassade.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Bahnhofsuhr_im_U7-Bahnhof_Rohrdamm%2C_Berlin-Spandau_2025-09-13.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/1/12/Berlin_-_S-Bahnhof_Frohnau_%289447898380%29.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/2/24/Brighton_Station_%2C_clock_-_geograph.org.uk_-_6553195.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Carnforth_station_-_station_clock_-_geograph.org.uk_-_4492419.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Clock%2C_Beverley_Station_-_geograph.org.uk_-_5465174.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Clock%2C_Paragon_Station_-_geograph.org.uk_-_5395624.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/7/76/Clock%2C_Paragon_Station_-_geograph.org.uk_-_5428807.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Clock_Hamburg_Hbf.JPG", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Clock_Tower_Mysore_Rly_Stn_Karnataka_Apr22_A7C_01904.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Clock_and_meeting_point_Zurich_HB.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Clock_at_Bogense_station.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Clock_at_the_Malching_S-Bahn_station_02.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Clock_on_Bewdley_Station_-_geograph.org.uk_-_1454668.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/DSC01652_Clock_Tower_Bolzano-Bozen_Central_Train_Station%2C_North_View.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/D%C3%BClmen%2C_Bahnhof%2C_Empfangsgeb%C3%A4ude_--_2012_--_3081.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/9/99/D%C3%BClmen%2C_Bahnhof%2C_Empfangsgeb%C3%A4ude_--_2012_--_3083.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/2/2a/D%C3%BClmen%2C_Bahnhof%2C_Empfangsgeb%C3%A4ude_--_2012_--_4069.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Erfurt_Hbf_station_signs_2025-04-23_07.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/9/99/FOT0766_Hausbahnsteig_Bahnhof_Moldava.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Jind.Hradec_Train_Station.JPG", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Klokkentoren_gelegen_direct_ten_zuiden_van_station_Wak%C5%8Dshi%2C_-22_februari_2014_17%EF%BC%9A21.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Kopenhagen_%28DK%29%2C_Bahnhof_--_2017_--_1672.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Kopenhagen_%28DK%29%2C_Bahnhof_--_2017_--_1672_%28bw%29.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/66/Mysore_Rly_Station_Panorama_Karnataka_Apr22_A7C_01908-10.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Nottingham_Midland_Station_clock_tower_-_geograph.org.uk_-_3441520.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/c6/Nottingham_station_clock_tower_-_geograph.org.uk_-_3720624.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Oulx_station_2025_4.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/7/7c/O%C5%9Bwi%C4%99cim_train_station%2C_2024_%2805%29.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Paneriai_train_station_06.09.2022_02.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Paris-Gare-de-Lyon_-_2015-05-02_-_IMG-0056.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/9/92/Station_-_334492_-_onroerenderfgoed.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/7/77/Station_Clock%2C_Boston_Manor_Station_-_geograph.org.uk_-_3099090.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Station_clock%2C_Carnforth_Railway_Station_-_geograph.org.uk_-_6325780.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Station_clock%2C_Victoria_-_geograph.org.uk_-_4282754.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Station_clock_-_geograph.org.uk_-_593381.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/5/59/Station_clock_at_Osterley_-_geograph.org.uk_-_2361501.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/63/Station_clock_by_passenger_train_at_Centennial_Station_%28Olympia-Lacey_Washington_Amtrak_stop%29.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Station_clock_by_track_as_Amtrak_Cascades_approaches_at_Centennial_Station_%28Olympia-Lacey_Washington_Amtrak_stop%29.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Station_clock_by_track_at_Centennial_Station_%28Olympia-Lacey_Washington_Amtrak_stop%29.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/d/dd/Station_clock_by_train_at_Centennial_Station_%28Olympia-Lacey_Washington_Amtrak_stop%29.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/49/The_station_clock%2C_Carnforth_-_geograph.org.uk_-_4693413.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Waterloo_Station_clock.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/1/17/Winchester%2C_station_clock_-_geograph.org.uk_-_2303169.jpg", "title": "とけい", "desc": "", "category": "かいがい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/1/1f/001_2020_04_21_Uhren_fuer_den_Innenbereich.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/3/37/002_2020_04_21_Uhren_fuer_den_Innenbereich.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/7/7c/003_2020_04_21_Uhren_fuer_den_Innenbereich.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/2/20/2019-08-08_Ruhla_alarm_clock.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/2023_Budzik_Perfect.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/43/A_digital_alarm_clock_in_Glasgow_%28cropped%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Alarm_Clock_%28Unsplash%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/66/Alarm_Clock_crossed_out.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/60/Alarm_Clocks.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/8/8d/Alarm_clock.png", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Alarm_clock_from_the_1990s.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Alarm_clock_in_a_middle_class_home_Rotimi8.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Alarm_clock_mainspring.JPG", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/e/e8/Alarm_clock_on_a_chair_%28Unsplash%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/d/da/Alarm_clock_with_sports_team_logo.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Alarm_clock_~24nezlns.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/3/30/Blue_alarm_clock_with_lighting_and_%22snooze%22_01.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Blue_alarm_clock_with_lighting_and_%22snooze%22_02.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Blue_alarm_clock_with_lighting_and_%22snooze%22_03.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/d/df/Blue_alarm_clock_with_lighting_and_%22snooze%22_04.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Blue_alarm_clock_with_lighting_and_%22snooze%22_05.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Blue_alarm_clock_with_lighting_and_%22snooze%22_06.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/61/Blue_alarm_clock_with_lighting_and_%22snooze%22_07.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/8/80/Blue_alarm_clock_with_lighting_and_%22snooze%22_08.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/66/Blue_alarm_clock_with_lighting_and_%22snooze%22_09.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Braillevekker.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Classic_alarm_clock_20180513.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Digital_alarm_clock_%28TFA_Dostmann%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/8/89/Digital_alarm_clock_%28unbranded%29-8322.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Digital_alarm_clock_%28unbranded%29-8323.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Digital_alarm_clock_%28unbranded%29-8324.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/5/56/East_Slovak_Museum_in_Ko%C5%A1ice_-_%27Lehrner_Kass%C3%A1n%27_temporary_exhibition_-_Travel_alarm_clock_by_Lehrner_from_1825_%2802%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/66/East_Slovak_Museum_in_Ko%C5%A1ice_-_%27Lehrner_Kass%C3%A1n%27_temporary_exhibition_-_Travel_alarm_clock_by_Lehrner_from_1825_%2804%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/9/93/IKEA90540891.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Lever_Timepiece%2C_nickelled_metal_case%2C_30-hour_movement%2C_alarum_bell_on_top.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Red_alarm_clock_with_hands%2C_May_2024_01.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/cb/Red_alarm_clock_with_hands%2C_May_2024_02.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Red_alarm_clock_with_hands%2C_May_2024_03.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Telechron_electric_clock_-_1.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Telechron_electric_clock_-_2.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/1/18/Telechron_electric_clock_-_3.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Telechron_electric_clock_-_4.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Vintage_Lester_Maddox_Novelty_Alarm_Clock%2C_Autographed_By_Lester_Maddox_In_1982%2C_Made_In_USA_%2815553539061%29.jpg", "title": "とけい", "desc": "", "category": "あたらしい"}, {"url": "https://upload.wikimedia.org/wikipedia/commons/4/41/World_alarm_clock_and_flashlight.jpeg", "title": "とけい", "desc": "", "category": "あたらしい"}];
+        let currentFilter = 'ぜんぶ';
+        let filteredData = [...allClockData];
         let currentIndex = 0;
-        let filteredData = [];
-        let favorites = JSON.parse(localStorage.getItem('clock_favorites') || '[]');
+        let favorites = JSON.parse(localStorage.getItem('daitokun_clocks_fav') || '[]');
 
         const imgContainer = document.getElementById('imgContainer');
-        const imgTitle = document.getElementById('imgTitle');
-        const imgDesc = document.getElementById('imgDesc');
-        const counter = document.getElementById('counter');
         const btnNext = document.getElementById('btnNext');
         const btnSave = document.getElementById('btnSave');
+        const favGrid = document.getElementById('favGrid');
         const favCount = document.getElementById('favCount');
-        const favList = document.getElementById('favList');
-        const categoryBtns = document.querySelectorAll('.category-btn');
 
-        function updateDisplay() {
-            if (filteredData.length === 0) {
-                imgContainer.innerHTML = '<div style="text-align: center; color: #999;">とけいが ありません</div>';
-                return;
-            }
-
-            const item = filteredData[currentIndex];
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.includes(filter));
+            });
             
+            if (filter === 'ぜんぶ') {
+                filteredData = [...allClockData];
+            } else {
+                filteredData = allClockData.filter(item => item.category === filter);
+            }
+            
+            currentIndex = Math.floor(Math.random() * filteredData.length);
+            showClock();
+        }
+
+        function showClock() {
+            if (filteredData.length === 0) return;
+            
+            imgContainer.innerHTML = '<div class="loading-spinner"></div>';
+            const item = filteredData[currentIndex];
             const img = new Image();
-            img.alt = item.title;
+            img.src = item.url;
             img.onload = () => {
                 imgContainer.innerHTML = '';
                 imgContainer.appendChild(img);
             };
             img.onerror = () => {
-                console.error('Failed to load image:', item.url);
-                setTimeout(nextImage, 300);
+                console.log("Error loading image, skipping...");
+                nextClock();
             };
-            img.src = item.url;
-
-            imgTitle.textContent = item.title;
-            imgDesc.textContent = item.desc;
-            counter.textContent = `${currentIndex + 1} / ${filteredData.length}`;
-
-            const isFav = favorites.some(f => f.url === item.url);
-            btnSave.textContent = isFav ? '❤️ ほぞんずみ' : '❤️ ほぞん';
-            btnSave.style.opacity = isFav ? '0.7' : '1';
         }
 
-        function filterCategory(category) {
-            currentCategory = category;
-            if (category === 'all') {
-                filteredData = [...allClockData];
-            } else {
-                filteredData = allClockData.filter(item => item.category === category);
-            }
-            currentIndex = 0;
-            updateDisplay();
-
-            categoryBtns.forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.category === category);
-            });
-        }
-
-        function nextImage() {
-            if (filteredData.length === 0) return;
+        function nextClock() {
             currentIndex = (currentIndex + 1) % filteredData.length;
-            updateDisplay();
+            showClock();
         }
 
         function saveFavorite() {
-            if (filteredData.length === 0) return;
             const item = filteredData[currentIndex];
-            const exists = favorites.some(f => f.url === item.url);
-
-            if (!exists) {
-                favorites.push(item);
-                localStorage.setItem('clock_favorites', JSON.stringify(favorites));
-                updateFavoritesList();
-                updateDisplay();
+            if (!favorites.some(f => f.url === item.url)) {
+                favorites.unshift(item);
+                if (favorites.length > 20) favorites.pop();
+                localStorage.setItem('daitokun_clocks_fav', JSON.stringify(favorites));
+                updateFavGrid();
             }
         }
 
-        function removeFavorite(url) {
-            favorites = favorites.filter(f => f.url !== url);
-            localStorage.setItem('clock_favorites', JSON.stringify(favorites));
-            updateFavoritesList();
-            updateDisplay();
-        }
-
-        function updateFavoritesList() {
-            favCount.textContent = `${favorites.length}`;
-            favList.innerHTML = '';
+        function updateFavGrid() {
+            favGrid.innerHTML = '';
             favorites.forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'favorite-item';
-                div.innerHTML = `
-                    <img src="${item.url}" alt="${item.title}">
-                    <button class="remove-btn" onclick="event.stopPropagation(); removeFavorite('${item.url.replace(/'/g, "\\'")}')">×</button>
-                `;
-                div.onclick = () => {
-                    const index = filteredData.findIndex(f => f.url === item.url);
-                    if (index !== -1) {
-                        currentIndex = index;
-                        updateDisplay();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                };
-                favList.appendChild(div);
+                div.className = 'fav-item';
+                div.innerHTML = `<img src="${item.url}" onclick="showThisFav('${item.url}')">`;
+                favGrid.appendChild(div);
             });
+            favCount.innerText = favorites.length + ' まい';
         }
 
-        btnNext.onclick = nextImage;
+        function showThisFav(url) {
+            const item = allClockData.find(f => f.url === url);
+            if (item) {
+                const img = new Image();
+                img.src = item.url;
+                imgContainer.innerHTML = '';
+                imgContainer.appendChild(img);
+            }
+        }
+
+        btnNext.onclick = nextClock;
         btnSave.onclick = saveFavorite;
-        imgContainer.onclick = nextImage;
+        
+        updateFavGrid();
+        setFilter('ぜんぶ');
 
-        categoryBtns.forEach(btn => {
-            btn.onclick = () => filterCategory(btn.dataset.category);
+        let touchStartX = 0;
+        imgContainer.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+        imgContainer.addEventListener('touchend', e => {
+            if (touchStartX - e.changedTouches[0].screenX > 50) nextClock();
         });
-
-        if (allClockData.length > 0) {
-            filterCategory('all');
-        }
-        updateFavoritesList();
+        imgContainer.onclick = nextClock;
     </script>
 </body>
 </html>
